@@ -1,4 +1,4 @@
-import { Controller, Get, Put, Post, Delete, Body, Param } from '@nestjs/common';
+import { Controller, Get, Put, Post, Delete, Body, Param, HttpException, HttpStatus, ParseIntPipe } from '@nestjs/common';
 import { SongsService } from './songs.service';
 import { CreateSongDTO } from './dto/create-song-dto';
 
@@ -9,11 +9,18 @@ export class SongsController {
 
     @Get()
     findAll(){
+        try{
         return this.songsService.getAllSongs();
+        }
+        catch(error){
+            console.log("this is error : "+error);
+        throw new HttpException('unauthorized access',HttpStatus.FORBIDDEN)
+        }
     }
 
     @Get(':id')
-    find(@Param('id') id:string){
+    find(@Param('id',new ParseIntPipe({errorHttpStatusCode:HttpStatus.NOT_ACCEPTABLE})) id:number){
+        console.log(typeof(id));
         return this.songsService.getSong(id);
     }
 

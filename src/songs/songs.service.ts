@@ -10,7 +10,7 @@ export class SongsService {
   }
 
   getSong(id){
-    return this.songs[this.songs.findIndex(s => s.id == id)]
+    return this.songs[this.songs.findIndex(s => s.id === id)]
   }
 
   createSong(song){
